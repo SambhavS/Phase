@@ -18,19 +18,19 @@ For example, to add two numbers, one would write `add 10 20`. No parenthesis are
 
 Phase supports integers, booleans, strings, lists and user-defined functions.
 
-**Integers**
+__Integers__
 
 Integers are represented literally in the conventional way. `1`, `-12`, and `30` are all examples of valid integers
 
-**Booleans**
+__Booleans__
 
 Booleans can be represented literally as `T` (for true) and `F` (for false). 
 
-**Strings**
+__Strings__
 
 Strings must be represented with one quote to begin them and one quote to end them. For example, `'Hello'` is a valid string.
 
-**Lists**
+__Lists__
 
 Lists can hold data of different types. When instantiating a list literal, elements should be separated by spaces. For example, `[1 2 3]` is a valid list.
 
