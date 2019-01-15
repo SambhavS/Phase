@@ -80,7 +80,7 @@ The block corresponding to the `while` statement will be executed iff the evalua
 Use `return` to return a value. In Phase, functions and whole programs have return values. Be sure to turn the 'return_prog_val' flag on if you want the return value of a program, if you are extending the interpreter. You can print the returned program value in the command line by typing the `-p` flag before the name of your Phase file.
 
 ## Builtin Functions
-Phase has a host of builtin functions. They are wrapped around Python's builtin functions, so reference for them can be found at https://docs.python.org/3/library/functions.html. Check the builtin file for the most recent list of builtins, but here are a list of all provided builtins as of writing this:
+Phase has a host of builtin functions. They are wrapped around Python's builtin functions, so reference for them can be found at https://docs.python.org/3/library/functions.html. Read the (very short) builtin file to read how each built in was implemented. Check the builtin file for the most recent list of builtins, but here are a list of all provided builtins as of writing this:
 
 `prn`, `let`, `eq`, `not_eq`, `add`, `div`, `mul`, `mod`, `sub`, `pow`, `abs`, `min`, `max`, `sort`, `sum`, `rand`, `zip`, `rev`, `pop`, `push`, `get`, `len`, `ind`, `seq`
 
