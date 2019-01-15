@@ -1,13 +1,60 @@
 import re
+import sys
 import random
 from phase_builtins import *
 
 DIGITS = set(["-","1","2","3","4","5","6","7","8","9","0"])
 SPECIAL_WORDS = set(["let", "inc", "and", "or", "not"])
+
 """
-error/exception handling, timing issues
+TODO:
+-error/exception handling
+-timing issues
 """
-def eval_program(program, return_prog_val=False, complement_env={}):
+
+# Command Line Control
+def master():
+	cmd_args = sys.argv
+
+	if len(cmd_args) == 1:
+		repl()
+	else:	
+		prog_val = eval_program(load(cmd_args[-1]), return_prog_val='-p' in cmd_args)
+		if prog_val:
+			print(prog_val)
+
+def repl():
+	prog, next_line, ind_count = "", "", 0
+	env = dict()
+	try:
+		while True:
+			whitespace = "\t" * ind_count
+			next_line = whitespace + input(">> {}".format(whitespace))
+			prog += next_line + "\n"	
+			if next_line in ("quit", "exit"):
+				break
+			elif not next_line.strip() or (next_line[-1] != ":" and ind_count == 0):
+				env, ret_val = eval_program(prog, return_prog_val=True, return_env=True, complement_env=env)
+				if ret_val != None:
+					print(ret_val)
+				prog, next_line, ind_count = "", "", 0
+			elif next_line[-1] == ":":
+				ind_count += 1
+	except Exception as e:
+		print (e)
+		master()
+	
+
+def temp():
+	loc = """
+	for (k ['hi' 1 2 3]):
+		prn k
+	"""
+	eval_program(loc)
+
+
+# Interpreter Logic
+def eval_program(program, return_prog_val=False, return_env=False, complement_env={}):
 	env = {"prn": prn, "let": let, "eq" : eq, "not_eq": not_eq, "add": add,
 		   "div": fldiv, "mul": mul, "mod": mod, "sub": sub, "pow": powx, 
 		   "abs": absx, "min": minx, "max": maxx, "sort": sortx, "sum": sumx, 
@@ -15,6 +62,10 @@ def eval_program(program, return_prog_val=False, complement_env={}):
 		   "get": get, "len": length, "ind": indx, "seq": seqx}
 	env.update(complement_env)
 	prog_val = eval_func(env, program+"\n")
+	if return_env and return_prog_val:
+		return env, prog_val
+	if return_env:
+		return env
 	if return_prog_val:
 		return prog_val
 
@@ -77,6 +128,7 @@ def eval_func(env, func_call):
 				while line_num < len(code) and indents[line_num] > ind_lvl:
 					func_body += "\t"*indents[line_num] + code[line_num] + "\n"
 					line_num += 1
+				line_num -= 1
 				let(env, func_name, lambda env, *params: user_func(env, func_body, arguments, *params))
 			else:
 				eval_expr(env, code_str)
@@ -140,8 +192,6 @@ def eval_expr(env, expression):
 			return env[fst]
 
 	else:
-		print(env)
-		print("Expression", expression, type(expression))
 		err("Bad term: {}".format(expression))
 
 def tokenize(expression):
@@ -161,6 +211,7 @@ def tokenize(expression):
 def extract_code(func_call):
 	# Seperates whitespace from code and returns both
 	lines = func_call.split("\n")
+
 	code = []
 	indents = []
 	for line in lines:
@@ -215,34 +266,14 @@ def load(fname):
 	with open(fname) as f:
 		return f.read()
 def prn(env, string):
-	print(phasify(string))
-
-def repl():
-	prog, next_line, ind_count = "", "", 0
-	while True:
-		whitespace = "\t" * ind_count
-		next_line = whitespace + input(">> {}".format(whitespace))
-		prog += next_line + "\n"	
-		if next_line in ("quit", "exit"):
-			break
-		elif not next_line.strip() or (next_line[-1] != ":" and ind_count == 0):
-			ret_val = eval_program(prog, return_prog_val=True)
-			if ret_val != None:
-				print(ret_val)
-			prog, next_line, ind_count = "", "", 0
-		elif next_line[-1] == ":":
-			ind_count += 1
-
-def temp():
-	loc = """
-	for (k ['hi' 1 2 3]):
-		prn k
-	"""
-	eval_program(loc)
+	if not string:
+		print()
+	else:
+		print(phasify(string))
 
 
-#repl()
-#temp()
+master()
+
 
 
 

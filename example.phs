@@ -1,0 +1,124 @@
+# Hi! Welcome to Phase! (This is a comment)
+# This code tutorial will help you learn the basics of the language. Let's get started!
+
+## 1) SPECIAL FUNCTIONS ##
+
+# First up, let's talk about some special functions: prn, let, inc
+# 'prn' lets your print to your terminal. Make sure to use single quotes
+
+prn 'SPECIAL FUNCTIONS'
+
+# 'let' allows you to bind a value to a variable name. Provide a variable name and
+# an expression that evaluates to a value
+
+let fst 100
+let snd (add 200 200)
+prn (add fst snd)
+
+# 'inc' lets us increments an integer variable by 1. 
+# Just type inc followed by a variable name
+prn ''
+
+let new_var 100
+prn new_var
+inc new_var
+prn new_var 
+
+## 2) CONTROL ##
+prn ''
+prn 'CONTROL'
+
+
+# Great! Now let's see how we can use control keywords to choose what code gets run
+# We have three control keywords: if, while, for
+
+# 'if' and 'while' should have a conditional body (between parenthesis)
+#  that evaluate to a truthy or falsey value
+
+if (T):
+	prn 12345
+	prn ''
+
+let x 1
+while (not_eq x 5):
+	prn x
+	inc x
+
+# 'for' should have a body that contains the name of a new iterative variable 
+# and an expression that evaluates to a list
+prn '' 
+
+for (z (seq 7 11)):
+	prn (mul z z)
+
+## 3) BOOLEAN KEYWORDS ##
+prn ''
+prn 'BOOLEAN KEYWORDS'
+
+
+# Check out the following code to see how to use booleans 
+# and their operators: and, or, not
+
+if (T):
+	prn T
+if (F):
+	prn F
+if (and T T):
+	prn 'Two trues'
+if (and T F):
+	prn 'This will not print'
+if (and F F):
+	prn 'Neither will this'
+if (or T T):
+	prn 'This will work'
+if (or T F):
+	prn 'As will this'
+if (or F T):
+	prn 'and this'
+if (not F):
+	prn 'Here we used the "not" operator'
+if ('sometimes we use truthy values'):
+	prn 'truthy values work, not just booleans!'
+
+## 4) FUNCTIONS ##
+prn ''
+prn 'FUNCTIONS'
+
+
+# We've already been using basic builtin functions like 'seq' and 'add'. 
+# We write the function name followed by its arguments.
+
+prn (sub 10 5)
+prn ''
+
+# In addition to using the builtin functions, we can define new functions and use them
+# We use the 'def' keyword to do this.
+prn ''
+
+def (print_five argument):
+	for (h (seq 0 5)):
+		prn argument
+print_five 'Howdy!!'
+
+# Some functions, like the last one, perform some action, but don't return a value.
+# But sometimes we want our functions to return a value. 
+# We can return a value by using the 'return' keyword.
+prn ''
+
+def (mul3 argument):
+	return (mul 3 argument)
+prn (mul3 (mul3 (mul3 100)))
+
+# Let's write another function that takes in two words and prints all 
+# the permutations of the lists
+prn ''
+
+def (perm lst1 lst2):
+	for (item1 lst1):
+		for (item2 lst2):
+			prn (add (add (add item1 ' ') item2) '!')
+perm ['Hi' 'Hello' 'Hola'] ['John' 'Joe' 'Jose']
+
+## Conclusion ##
+# You did it! You've got everything you need to start writing your own programs!
+# Now go on, make someting great!
