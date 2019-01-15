@@ -38,9 +38,11 @@ Lists can hold data of different types. When instantiating a list literal, eleme
 **Prn**
 
 `prn` is the printing function. prn takes in a single argument and prints it.
+
 **Let**
 
 `let` is the assignment function. The equivalent of the Pythonic assignment `x = 5` would be written as `let x 5` in Phase. Assignments must be literals; aliasing is not allowed.
+
 **Inc**
 
 `inc` lets you increment a variable that has an integer value. Instead of writing `let x (add x 1)` you can write `inc x`
@@ -69,11 +71,12 @@ The block corresponding to the `while` statement will be executed iff the evalua
 **def**
 
 `def` allows the user to define his own functions. Like Scheme and Python, `def` should be followed by the function name and its parameters in the same syntax as if you were calling the function with arguments.
+
 **return**
 
 Use `return` to return a value. In Phase, functions and whole programs have return values. Be sure to turn the 'return_prog_val' flag on if you want the return value of a program, if you are extending the interpreter. You can print the returned program value in the command line by typing the `-p` flag before the name of your Phase file.
 
-## Builtin Functions**
+## Builtin Functions
 Phase has a host of builtin functions. They are wrapped around Python's builtin functions, so reference for them can be found at https://docs.python.org/3/library/functions.html. As of this writing, the following functions are builtin: 
 `prn`, `let`, `eq`, `not_eq`, `add`, `div`, `mul`, `mod`, `sub`, `pow`, `abs`, `min`, `max`, `sort`, `sum`, `rand`, `zip`, `rev`, `pop`, `push`, `get`, `len`, `ind`, `seq`
 
