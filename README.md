@@ -18,23 +18,23 @@ For example, to add two numbers, one would write `add 10 20`. No parenthesis are
 
 Phase supports integers, booleans, strings, lists and user-defined functions.
 
-__Integers__
+_Integers_
 
 Integers are represented literally in the conventional way. `1`, `-12`, and `30` are all examples of valid integers
 
-__Booleans__
+_Booleans_
 
 Booleans can be represented literally as `T` (for true) and `F` (for false). 
 
-__Strings__
+_Strings_
 
 Strings must be represented with one quote to begin them and one quote to end them. For example, `'Hello'` is a valid string.
 
-__Lists__
+_Lists_
 
 Lists can hold data of different types. When instantiating a list literal, elements should be separated by spaces. For example, `[1 2 3]` is a valid list.
 
-**User-defined Functions**
+_User-defined Functions_
 
 Users can define their own functions use the `def` keyword (see details below). User-defined functions are called with the same syntax and rules as builtin functions. Functions are NOT treated as first class objects and higher order functions are therefore not permitted. Function names can't be T or F, can't contain single quotes, and must start with a letter or underscore.
 
