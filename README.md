@@ -66,8 +66,7 @@ The block corresponding to the `while` statement will be executed iff the evalua
 
 
 ## Boolean Keywords
-`and`, `not`, and `or` are boolean keywords. They work like functions but may not evaluate all given arguments because of short circuiting.
-
+`and`, `not`, and `or` are boolean keywords. If you've never used boolean operators before, you can read about them here: https://en.wikipedia.org/wiki/Boolean_algebra#Basic_operations. Syntactically, they work like functions but may not evaluate all given arguments because of short circuiting.
 
 ## Function Keywords
 **def**
