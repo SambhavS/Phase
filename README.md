@@ -64,7 +64,7 @@ Users can define their own functions use the `def` keyword (see details below). 
 `inc` lets you increment a variable that has an integer value. Instead of writing `let x (add x 1)` you can write `inc x`
 
 ## Control (for, while, if)
-Control keyword syntax is: keyword[one space]<open paren>(keyword body)<close paren>. For example, `if (eq x 1):`. More examples can be seen in example.phs. The control keywords work very similarly to their counterparts in Python.
+Control keyword syntax is: keyword[one space][open paren][keyword body][close paren]. For example, `if (eq x 1):`. More examples can be seen in example.phs. The control keywords work very similarly to their counterparts in Python.
 
 **if**
 
