@@ -4,7 +4,7 @@ You can run Phase files with the command `python3 phase_main.py FILENAME.phs`, w
 
 # Documentation
 Phase is a simple language. It uses prefix notation, like Lisps. It uses whitespace like python (use 4-spaces or tabs). It is best understood by reading about its keywords and major concepts below and testing out simple programs with the REPL or in a file you make.
----
+
 ## Major Ideas
 
 **Prefix notation**
@@ -32,7 +32,7 @@ Users can define their own functions use the `def` keyword (see details below). 
 
 Lists can hold data of different types. When instantiating a list literal, elements should be separated by spaces. For example, `[1 2 3]` is a valid string.
 
----
+
 ## Special Functions 
 **Prn**
 
@@ -59,11 +59,11 @@ The block corresponding to the `while` statement will be executed iff the evalua
 
 `for` in Phase is very similar to `for` in Python. `for` takes in a new variable name and either a list or variable whose value is a list. It then iterates through the list, allowing each value to be accessed in the loop by referring to the given variable. Code in the `if` block should be indented.
 
----
+
 ## Boolean Keywords
 `and`, `not`, and `or` are boolean keywords. They work like functions but may not evaluate all given arguments because of short circuiting.
 
----
+
 ## Function Keywords
 **def**
 
