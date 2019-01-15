@@ -1,9 +1,22 @@
 # Phase
 Phase is an interpreted and dynamically typed programming language whose syntax takes inspiration from Python and Scheme.
-You can run Phase files with the command `python3 phase_main.py FILENAME.phs`, where FILENAME.phs is your Phase file. You can test this with the example file in the directory. The example file `example.phs` has examples of how to write short programs and demonstrates how to use keywords and special functions. You can also use the read-eval-print-loop (REPL) by omitting the filename: 
+You can run Phase files with the command `$ python3 phase_main.py FILENAME.phs`, where FILENAME.phs is your Phase file. 
+
+
+You can also use the read-eval-print-loop (REPL) by omitting the filename: 
 `python3 phase_main.py`. 
 
-Phase is a simple language with a small core of keywords and few primitive data types. It uses prefix notation, like Lisps, whitespace like Python (4-spaces or tabs). It is best learned by reading the documentation below and testing out simple programs by using the REPL or runnning your own scripts. One can assume choices not explicitly outlined in the documentation below are made in the most Pythonic way possible.
+
+The example file `example.phs` is a tutorial composed of examples to help you get started with writing short programs. Once you've skimmed through the documentation below, make sure to take a look. Run `$ python3 phase_main.py example.phs` to get started.
+
+
+Phase is a simple language with a small core of keywords and few primitive data types. It uses prefix notation, like Lisps, whitespace like Python (4-spaces or tabs). It is best learned by reading the documentation, playing with `example.phs` and testing out simple programs by using the REPL or runnning your own scripts. 
+
+
+One can assume choices not explicitly outlined in the documentation below are made in the most Pythonic way possible.
+
+
+To report bugs, ask questions, or give feedback, send an email to sambhav@berkeley.edu
 
 # Documentation
 
