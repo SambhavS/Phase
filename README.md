@@ -7,34 +7,32 @@ Phase is a simple language with a small core of keywords and few primitive data 
 
 # Documentation
 
-## Major Ideas
-
-**Prefix Notation**
+## Prefix Notation
 
 Functions are called using prefix notation. This means that a function call is a function name followed by its arguments.
 For example, to add two numbers, one would write `add 10 20`. No parenthesis are needed if only one function is being called in the line. If multiple functions are being called, all nested function calls must have parenthesis. For example, `prn (add (add 1 2) 3)` would print the sum of 1, 2, and 3.
 
-**Data Types**
+## Data Types
 
 Phase supports integers, booleans, strings, lists and user-defined functions.
 
-INTEGERS
+**Integers**
 
 Integers are represented literally in the conventional way. `1`, `-12`, and `30` are all examples of valid integers
 
-BOOLEANS
+**Booleans**
 
 Booleans can be represented literally as `T` (for true) and `F` (for false). 
 
-STRINGS
+**Strings**
 
 Strings must be represented with one quote to begin them and one quote to end them. For example, `'Hello'` is a valid string.
 
-LISTS
+**Lists**
 
 Lists can hold data of different types. When instantiating a list literal, elements should be separated by spaces. For example, `[1 2 3]` is a valid list.
 
-USER-DEFINED FUNCTIONS
+**User-defined Functions**
 
 Users can define their own functions use the `def` keyword (see details below). User-defined functions are called with the same syntax and rules as builtin functions. Functions are NOT treated as first class objects and higher order functions are therefore not permitted. Function names can't be T or F, can't contain single quotes, and must start with a letter or underscore.
 
