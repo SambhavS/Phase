@@ -1,19 +1,20 @@
 # Phase
-Phase is a dynamically typed programming language with a syntax similar to that of Python and Scheme.
+Phase is an interpreted and dynamically typed programming language whose syntax takes inspiration from Python and Scheme.
 You can run Phase files with the command `python3 phase_main.py FILENAME.phs`, where FILENAME.phs is your Phase file. You can test this with the example file in the directory. The example file has examples of all the keywords and special functions and should be used for reference. You can also use the read-eval-print-loop (REPL) by omitting the filename: 
 `python3 phase_main.py`. 
 
+Phase is a simple language with a small core of keywords and few primitive data types. It uses prefix notation, like Lisps. It uses whitespace like Python (4-spaces or tabs). It is best learned by reading the documentation below and testing out simple programs by using the REPL or runnning your own scripts.
+
 # Documentation
-Phase is a simple language. It uses prefix notation, like Lisps. It uses whitespace like python (use 4-spaces or tabs). It is best understood by reading about its keywords and major concepts below and testing out simple programs with the REPL or in a file you make.
 
 ## Major Ideas
 
-**Prefix notation**
+**Prefix Notation**
 
 Functions are called using prefix notation. This means that a function call is a function name followed by its arguments.
 For example, to add two numbers, one would write `add 10 20`. No parenthesis are needed if only one function is being called in the line. If multiple functions are being called, all nested function calls must have parenthesis. For example, `prn (add (add 1 2) 3)` would print the sum of 1, 2, and 3.
 
-**Data types**
+**Data Types**
 
 Phase supports booleans, strings, integers, lists and user defined functions.
 
@@ -35,20 +36,20 @@ Lists can hold data of different types. When instantiating a list literal, eleme
 
 
 ## Special Functions 
-**Prn**
+**prn**
 
 `prn` is the printing function. prn takes in a single argument and prints it.
 
-**Let**
+**let**
 
 `let` is the assignment function. The equivalent of the Pythonic assignment `x = 5` would be written as `let x 5` in Phase. Assignments must be literals; aliasing is not allowed.
 
-**Inc**
+**inc**
 
 `inc` lets you increment a variable that has an integer value. Instead of writing `let x (add x 1)` you can write `inc x`
 
-## Control Keywords (for, while, if)
-Control keyword syntax is: keyword<one space><open paren><keyword body><close paren>. For example, `if (eq x 1):`. More examples can be seen in example.phs. In general, all the control keywords work very similarly to their counterparts in Python.
+## Control (for, while, if)
+Control keyword syntax is: keyword[one space]<open paren>(keyword body)<close paren>. For example, `if (eq x 1):`. More examples can be seen in example.phs. The control keywords work very similarly to their counterparts in Python.
 
 **if**
 
@@ -77,6 +78,7 @@ The block corresponding to the `while` statement will be executed iff the evalua
 Use `return` to return a value. In Phase, functions and whole programs have return values. Be sure to turn the 'return_prog_val' flag on if you want the return value of a program, if you are extending the interpreter. You can print the returned program value in the command line by typing the `-p` flag before the name of your Phase file.
 
 ## Builtin Functions
-Phase has a host of builtin functions. They are wrapped around Python's builtin functions, so reference for them can be found at https://docs.python.org/3/library/functions.html. As of this writing, the following functions are builtin: 
+Phase has a host of builtin functions. They are wrapped around Python's builtin functions, so reference for them can be found at https://docs.python.org/3/library/functions.html. Check the builtin file for the most recent list of builtins, but here are a list of all provided builtins as of writing this:
+
 `prn`, `let`, `eq`, `not_eq`, `add`, `div`, `mul`, `mod`, `sub`, `pow`, `abs`, `min`, `max`, `sort`, `sum`, `rand`, `zip`, `rev`, `pop`, `push`, `get`, `len`, `ind`, `seq`
 
