@@ -1,9 +1,9 @@
 # Phase
 Phase is an interpreted and dynamically typed programming language whose syntax takes inspiration from Python and Scheme.
-You can run Phase files with the command `python3 phase_main.py FILENAME.phs`, where FILENAME.phs is your Phase file. You can test this with the example file in the directory. The example file has examples of all the keywords and special functions and should be used for reference. You can also use the read-eval-print-loop (REPL) by omitting the filename: 
+You can run Phase files with the command `python3 phase_main.py FILENAME.phs`, where FILENAME.phs is your Phase file. You can test this with the example file in the directory. The example file `example.phs` has examples of how to write short programs and demonstrates how to use keywords and special functions. You can also use the read-eval-print-loop (REPL) by omitting the filename: 
 `python3 phase_main.py`. 
 
-Phase is a simple language with a small core of keywords and few primitive data types. It uses prefix notation, like Lisps. It uses whitespace like Python (4-spaces or tabs). It is best learned by reading the documentation below and testing out simple programs by using the REPL or runnning your own scripts. One can assume choices not explicitly outlined in the documentation below are made in the most Pythonic way possible.
+Phase is a simple language with a small core of keywords and few primitive data types. It uses prefix notation, like Lisps, whitespace like Python (4-spaces or tabs). It is best learned by reading the documentation below and testing out simple programs by using the REPL or runnning your own scripts. One can assume choices not explicitly outlined in the documentation below are made in the most Pythonic way possible.
 
 # Documentation
 
@@ -16,7 +16,10 @@ For example, to add two numbers, one would write `add 10 20`. No parenthesis are
 
 **Data Types**
 
-Phase supports booleans, strings, integers, lists and user defined functions.
+Phase supports integers, booleans, strings, lists and user-defined functions.
+*Integers*
+
+Integers are represented literally in the conventional way. `1`, `-12`, and `30` are all examples of valid integers
 
 *Booleans*:
 
@@ -26,14 +29,13 @@ Booleans can be represented literally as `T` (for true) and `F` (for false).
 
 Strings must be represented with one quote to begin them and one quote to end them. For example, `'Hello'` is a valid string.
 
-*Functions*:
-
-Users can define their own functions use the `def` keyword (see details below). Functions are NOT treated as first class objects and higher order functions are therefore not permitted. Function names can't be T or F, can't contain single quotes, and must start with a letter or underscore.
-
 *Lists*:
 
-Lists can hold data of different types. When instantiating a list literal, elements should be separated by spaces. For example, `[1 2 3]` is a valid string.
+Lists can hold data of different types. When instantiating a list literal, elements should be separated by spaces. For example, `[1 2 3]` is a valid list.
 
+*User-defined Functions*:
+
+Users can define their own functions use the `def` keyword (see details below). User-defined functions are called with the same syntax and rules as builtin functions. Functions are NOT treated as first class objects and higher order functions are therefore not permitted. Function names can't be T or F, can't contain single quotes, and must start with a letter or underscore.
 
 ## Special Functions 
 **prn**
@@ -42,7 +44,7 @@ Lists can hold data of different types. When instantiating a list literal, eleme
 
 **let**
 
-`let` is the assignment function. The equivalent of the Pythonic assignment `x = 5` would be written as `let x 5` in Phase. Assignments must be literals; aliasing is not allowed.
+`let` is the assignment function. `let` takes in a variable name and an expression that evaluates to a value. The equivalent of the Pythonic assignment `x = 5` would be written as `let x 5` in Phase. Assignments must be literals; aliasing is not allowed.
 
 **inc**
 
