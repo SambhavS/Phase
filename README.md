@@ -10,7 +10,9 @@ Phase is a simple language with a small core of keywords and few primitive data 
 ## Prefix Notation
 
 Functions are called using prefix notation. This means that a function call is a function name followed by its arguments.
-For example, to add two numbers, one would write `add 10 20`. No parenthesis are needed if only one function is being called in the line. If multiple functions are being called, all nested function calls must have parenthesis. For example, `prn (add (add 1 2) 3)` would print the sum of 1, 2, and 3.
+For example, to add two numbers, one would write `add 10 20`. No parenthesis are needed if only one function is being called in the line. If multiple functions are being called, all nested function calls must have parenthesis. 
+
+For example, `prn (add (add 1 2) 3)` would print the sum of 1, 2, and 3.
 
 ## Data Types
 
