@@ -84,3 +84,6 @@ Phase has a host of builtin functions. They are wrapped around Python's builtin 
 
 `prn`, `let`, `eq`, `not_eq`, `add`, `div`, `mul`, `mod`, `sub`, `pow`, `abs`, `min`, `max`, `sort`, `sum`, `rand`, `zip`, `rev`, `pop`, `push`, `get`, `len`, `ind`, `seq`
 
+## Comments
+Single line comments can be written by writing a `#` at the start of a line. Everything on the line afer the `#` will be ignored by the interpreter.
+
