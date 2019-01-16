@@ -1,9 +1,21 @@
 # Phase
 Phase is an interpreted and dynamically typed programming language whose syntax takes inspiration from Python and Scheme.
-You can run Phase files with the command `python3 phase_main.py FILENAME.phs`, where FILENAME.phs is your Phase file. You can test this with the example file in the directory. The example file `example.phs` has examples of how to write short programs and demonstrates how to use keywords and special functions. You can also use the read-eval-print-loop (REPL) by omitting the filename: 
-`python3 phase_main.py`. 
+You can run Phase files with the command `$python3 phase_main.py FILENAME.phs`, where FILENAME.phs is your Phase file. 
 
-Phase is a simple language with a small core of keywords and few primitive data types. It uses prefix notation, like Lisps, whitespace like Python (4-spaces or tabs). It is best learned by reading the documentation below and testing out simple programs by using the REPL or runnning your own scripts. One can assume choices not explicitly outlined in the documentation below are made in the most Pythonic way possible.
+You can also use the read-eval-print-loop (REPL) by omitting the filename: 
+`$python3 phase_main.py`. 
+
+
+The example file `example.phs` is a tutorial composed of examples to help you get started with writing short programs. Once you've skimmed through the documentation below, it should be your next resource. Run `$python3 phase_main.py example.phs` to get started.
+
+
+Phase is a simple language with a small core of keywords and few primitive data types. It uses prefix notation, like Lisps, and is whitespace separated like Python (4-spaces or tabs). It is best learned by reading the documentation, playing with `example.phs` and testing out simple programs by using the REPL or runnning your own scripts. 
+
+
+One can assume choices not explicitly outlined in the documentation below are made in the most Pythonic way possible.
+
+
+To report bugs, ask questions, or give feedback, send an email to sambhav@berkeley.edu
 
 # Documentation
 
@@ -52,7 +64,7 @@ Users can define their own functions use the `def` keyword (see details below). 
 `inc` lets you increment a variable that has an integer value. Instead of writing `let x (add x 1)` you can write `inc x`
 
 ## Control (for, while, if)
-Control keyword syntax is: keyword[one space]<open paren>(keyword body)<close paren>. For example, `if (eq x 1):`. More examples can be seen in example.phs. The control keywords work very similarly to their counterparts in Python.
+Control keyword syntax is: keyword[one space][open paren][keyword body][close paren]. For example, `if (eq x 1):`. More examples can be seen in example.phs. The control keywords work very similarly to their counterparts in Python.
 
 **if**
 
