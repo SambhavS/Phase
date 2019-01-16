@@ -1,4 +1,6 @@
 import random
+import re
+
 ## Built-in Functions ##
 
 # Special Keyword Functions
@@ -20,7 +22,11 @@ def inputx(env):
 	return input()
 
 def loadx(env, fname):
-	return load(fname)
+	with open(fname) as f:
+		string = re.sub("'", '"', f.read())
+		string = re.sub("\(", "{", string)
+		string = re.sub("\)", "}", string)
+	return string
 
 # List Functions
 def get(env, ind, lst):

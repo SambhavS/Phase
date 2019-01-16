@@ -28,7 +28,7 @@ Booleans can be represented literally as `T` (for true) and `F` (for false).
 
 **Strings**
 
-Strings must be represented with one quote to begin them and one quote to end them. For example, `'Hello'` is a valid string.
+Strings must be represented with one quote to begin them and one quote to end them. For example, `'Hello'` is a valid string. Strings do not have support for single quotes or parenthesis; using either in a string literal will cause unexpected behaviour. The `load` function will replace all parenthesis and single quotes with brackets and double quotes when loading a given file.
 
 **Lists**
 

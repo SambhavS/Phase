@@ -1,10 +1,22 @@
 import re
 import sys
 import random
+import traceback
 from phase_builtins import *
 
 DIGITS = set(["-","1","2","3","4","5","6","7","8","9","0"])
 SPECIAL_WORDS = set(["let", "inc", "and", "or", "not"])
+CURRENT_LINE = [(-1,"")]
+LAST_FUNC = [(-1,"<main>")]
+class pcols:
+    LIGHTPINK = "\033[95m"
+    LIGHTBLUE = "\033[94m"
+    LIGHTGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDCOL = "\033[0m"
+    BLUE = "\033[34m"
+    GREY ="\033[90m"
 
 """
 TODO:
@@ -19,7 +31,7 @@ def master():
 	if len(cmd_args) == 1:
 		repl()
 	else:	
-		prog_val = eval_program(load(cmd_args[-1]), return_prog_val='-p' in cmd_args)
+		prog_val = eval_program(load(cmd_args[-1]), return_prog_val="-p" in cmd_args)
 		if prog_val:
 			print(prog_val)
 
@@ -52,22 +64,40 @@ def temp():
 	"""
 	eval_program(loc)
 
+"""
+Syntax Error 
+Runtime errors: ZeroDivide, type errors, name errors, number of arguments, 
+			    invalid object created (probably my fault)
 
+
+"""
 # Interpreter Logic
 def eval_program(program, return_prog_val=False, return_env=False, complement_env={}):
-	env = {"prn": prn, "let": let, "eq" : eq, "not_eq": not_eq, "add": add,
-		   "div": fldiv, "mul": mul, "mod": mod, "sub": sub, "pow": powx, 
-		   "abs": absx, "min": minx, "max": maxx, "sort": sortx, "sum": sumx, 
-		   "rand": rand, "zip": zipx, "rev": revx, "pop": popx, "push": pushx, 
-		   "get": get, "len": length, "ind": indx, "seq": seqx}
-	env.update(complement_env)
-	prog_val = eval_func(env, program+"\n")
-	if return_env and return_prog_val:
-		return env, prog_val
-	if return_env:
-		return env
-	if return_prog_val:
-		return prog_val
+	try:
+		env = {"prn": prn, "let": let, "eq" : eq, "not_eq": not_eq, "add": add,
+			   "div": fldiv, "mul": mul, "mod": mod, "sub": sub, "pow": powx, 
+			   "abs": absx, "min": minx, "max": maxx, "sort": sortx, "sum": sumx, 
+			   "rand": rand, "zip": zipx, "rev": revx, "pop": popx, "push": pushx, 
+			   "get": get, "len": length, "ind": indx, "seq": seqx, "load": loadx,
+			   "input": inputx}
+		env.update(complement_env)
+		prog_val = eval_func(env, program+"\n")
+		if return_env and return_prog_val:
+			return env, prog_val
+		if return_env:
+			return env
+		if return_prog_val:
+			return prog_val
+	except Exception as e:
+		print("*************************************************")
+		print("{}: {}".format(type(e).__name__, e))
+		line_num, offending_line = CURRENT_LINE[0]
+		print("  line {}, in {}:".format(line_num + 1, LAST_FUNC[0][1]))
+		print("    {}".format(offending_line))
+		print("*************************************************")
+		print(pcols.GREY)
+		traceback.print_exc()
+		print(pcols.ENDCOL)
 
 def eval_func(env, func_call):
 	code, indents = extract_code(func_call)
@@ -76,6 +106,7 @@ def eval_func(env, func_call):
 	for_env = {}
 	while line_num < len(code):
 		code_str = code[line_num]
+		CURRENT_LINE[0] = (line_num + LAST_FUNC[0][0] + 1, code_str)
 		ind_lvl = indents[line_num]
 		if len(loops) and ind_lvl <= loops[-1][-1]:
 			loop_type, expression, loop_linenum, var_dict, _ = loops[-1]
@@ -129,15 +160,14 @@ def eval_func(env, func_call):
 					func_body += "\t"*indents[line_num] + code[line_num] + "\n"
 					line_num += 1
 				line_num -= 1
-				let(env, func_name, lambda env, *params: user_func(env, func_body, arguments, *params))
+				let(env, func_name, lambda env, *params: user_func(env, func_name, func_body, arguments, *params))
 			else:
 				eval_expr(env, code_str)
-
 		line_num += 1
 
 def phasify(obj):
 	if isinstance(obj, bool):
-		return 'T' if obj else 'F'
+		return "T" if obj else "F"
 	if isinstance(obj, int):
 		return str(obj)
 	if isinstance(obj, str):
@@ -145,7 +175,7 @@ def phasify(obj):
 	if isinstance(obj, list):
 		phasified_list = [phasify(i)+" " for i in obj]
 		return "[" + "".join(phasified_list).strip() + "]"
-	err("Bad obj: {}".format(obj))
+	raise TypeError("Invalid object: {}".format(obj))
 
 def eval_expr(env, expression):
 	expression = deparen(env, expression.strip())
@@ -158,8 +188,8 @@ def eval_expr(env, expression):
 		return int(fst)
 	elif fst[0] == "[":
 		return [eval_expr(env, i) for i in expression[1:-1].split()]
-	elif fst in ('T', 'F'):
-		return True if fst == 'T' else False
+	elif fst in ("T", "F"):
+		return True if fst == "T" else False
 	elif fst in SPECIAL_WORDS:
 
 		# Keyword Functions
@@ -192,14 +222,20 @@ def eval_expr(env, expression):
 			return env[fst]
 
 	else:
-		err("Bad term: {}".format(expression))
+		message = "'{}' is not defined".format(fst)
+		if fst[-1] == ",":
+			message += "{}\n(If '{}' was in a list, note that lists are not comma separated){}".format(pcols.GREY, fst, pcols.ENDCOL)
+		raise NameError(message)
 
 def tokenize(expression):
 	if not expression:
 		return []
 	if expression[0] in ("'", "["):
 		if len(expression) < 2:
-			err("Unmatched quote")
+			if expression[0] == "'":
+				raise SyntaxError("Unmatched quote")
+			else:
+				raise SyntaxError("Unmatched bracket")
 		matching = "'" if expression[0] == "'" else "]"
 		end_ind = 1 + expression[1:].find(matching)
 		return [expression[0:end_ind+1]] + tokenize(expression[end_ind+1:].strip())
@@ -214,10 +250,11 @@ def extract_code(func_call):
 
 	code = []
 	indents = []
-	for line in lines:
+	for i, line in enumerate(lines):
 		white_space, rest = re.match(r"\s*", line).group(), line.strip()
 		if len(set(white_space)) > 1:
-			err("Inconsistent use of spaces and tabs")
+			CURRENT_LINE[0] = (i, line)
+			raise IndentationError("Inconsistent use of spaces and tabs")
 		elif len(set(white_space)) == 0:
 			ind_lvl = 0
 		elif white_space[0] == "\t":
@@ -248,23 +285,23 @@ def deparen(env, expression):
 	new_expression = expression[:coords[0]] + evaluated_expression + expression[coords[1]+1:]
 	return deparen(env, new_expression)
 
-def user_func(env, func_body, args, *params):
+def user_func(env, func_name, func_body, args, *params):
 	# Executes user defined function
 	params = list(params)
 	if len(args) != len(params):
-		err("Incorrect number of arguments")
+		raise RuntimeError("Incorrect number of args in user defined function")
 	else:
 		copy_env = {key:val for key,val in env.items()}
 		for param, arg in zip(params, args):
 			let(copy_env, arg, param)
+		LAST_FUNC[0] = (CURRENT_LINE[0][0] - len(func_body.split("\n")), func_name)
+		print(LAST_FUNC)
 		return eval_func(copy_env, func_body)
-
-def err(string):
-	raise Exception("Error  - {}".format(string))
 
 def load(fname):
 	with open(fname) as f:
 		return f.read()
+
 def prn(env, string):
 	if not string:
 		print()
@@ -273,14 +310,3 @@ def prn(env, string):
 
 
 master()
-
-
-
-
-
-
-
-
-
-
-
