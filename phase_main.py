@@ -188,6 +188,9 @@ def eval_expr(env, expression):
 	expression = re.sub(r"\\'", QUOTE_SUB, expression)
 	expression = re.sub(LPAREN_SUB, "\(", expression)
 	expression = re.sub(RPAREN_SUB, "\)", expression)
+	if expression == "":
+		raise SyntaxError("Empty expression found\n{}{}{}".format(pcols.GREY,
+			"Check if chars escaped correctly, look for empty (),\nand check if None is mistakenly being called", pcols.ENDCOL))
 	tokens = tokenize(expression)
 	fst = tokens[0]
 
