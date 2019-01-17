@@ -8,20 +8,18 @@ DIGITS = set(["-","1","2","3","4","5","6","7","8","9","0"])
 SPECIAL_WORDS = set(["let", "inc", "and", "or", "not"])
 CURRENT_LINE = [(-1,"")]
 LAST_FUNC = [(-1,"<main>")]
+QUOTE_SUB = "QUOTESUB"
+LPAREN_SUB = "AAAas12dadsa3AA"
+RPAREN_SUB = "BBBBBfgrhrbadas"
 class pcols:
-    LIGHTPINK = "\033[95m"
-    LIGHTBLUE = "\033[94m"
-    LIGHTGREEN = "\033[92m"
-    WARNING = "\033[93m"
     FAIL = "\033[91m"
     ENDCOL = "\033[0m"
-    BLUE = "\033[34m"
     GREY ="\033[90m"
 
 """
 TODO:
--error/exception handling
--timing issues
+-error/exception handling for repl
+-make faster
 """
 
 # Command Line Control
@@ -88,6 +86,8 @@ def eval_program(program, return_prog_val=False, return_env=False, complement_en
 			return env
 		if return_prog_val:
 			return prog_val
+
+	# Error Reporting
 	except Exception as e:
 		print("*************************************************")
 		print("{}: {}".format(type(e).__name__, e))
@@ -105,9 +105,10 @@ def eval_func(env, func_call):
 	loops = []
 	for_env = {}
 	while line_num < len(code):
-		code_str = code[line_num]
+		code_str, ind_lvl = code[line_num], indents[line_num]
 		CURRENT_LINE[0] = (line_num + LAST_FUNC[0][0] + 1, code_str)
-		ind_lvl = indents[line_num]
+
+		# Check whether to repeat loop
 		if len(loops) and ind_lvl <= loops[-1][-1]:
 			loop_type, expression, loop_linenum, var_dict, _ = loops[-1]
 			if eval_expr(env, expression):
@@ -120,10 +121,12 @@ def eval_func(env, func_call):
 			else:
 				loops.pop()
 			continue
+
+		
 		if code_str and code_str[0] != "#":
 			tokens = code_str.split()
 			command = tokens[0]
-			# Control		
+			# Handles lines starting with a control keyword or function keyword
 			if command in ("while", "if", "for"):
 
 				if command == "for":
@@ -151,6 +154,7 @@ def eval_func(env, func_call):
 
 			elif command == "return":
 				return eval_expr(env, code_str[code_str.find(" "):].strip())
+
 			elif command == "def":
 				def_tokens = code_str[code_str.find("(")+1 : code_str.rfind(")")].split()
 				func_name, arguments = def_tokens[0], def_tokens[1:]
@@ -162,6 +166,7 @@ def eval_func(env, func_call):
 				line_num -= 1
 				let(env, func_name, lambda env, *params: user_func(env, func_name, func_body, arguments, *params))
 			else:
+				# Non-keyword line
 				eval_expr(env, code_str)
 		line_num += 1
 
@@ -171,6 +176,7 @@ def phasify(obj):
 	if isinstance(obj, int):
 		return str(obj)
 	if isinstance(obj, str):
+		obj = re.sub("'", "\'", obj)
 		return "'" + obj + "'"
 	if isinstance(obj, list):
 		phasified_list = [phasify(i)+" " for i in obj]
@@ -179,11 +185,15 @@ def phasify(obj):
 
 def eval_expr(env, expression):
 	expression = deparen(env, expression.strip())
+	expression = re.sub(r"\\'", QUOTE_SUB, expression)
+	expression = re.sub(LPAREN_SUB, "\(", expression)
+	expression = re.sub(RPAREN_SUB, "\)", expression)
 	tokens = tokenize(expression)
 	fst = tokens[0]
 
 	if fst[0] == "'":
-		return fst[1:-1]
+		fst = re.sub(r"\\\(", "(", re.sub(r"\\\)", ")", fst))
+		return re.sub(QUOTE_SUB, "'", fst[1:-1])
 	elif set([i for i in fst]).issubset(DIGITS):
 		return int(fst)
 	elif fst[0] == "[":
@@ -247,7 +257,6 @@ def tokenize(expression):
 def extract_code(func_call):
 	# Seperates whitespace from code and returns both
 	lines = func_call.split("\n")
-
 	code = []
 	indents = []
 	for i, line in enumerate(lines):
@@ -267,7 +276,10 @@ def extract_code(func_call):
 
 def deparen(env, expression):
 	# Finds and evaluates parenthetical expressions. Returns evaluated expression
+	expression = re.sub(r"\\\(", LPAREN_SUB, expression)
+	expression = re.sub(r"\\\)", RPAREN_SUB, expression)
 	if "(" not in expression or ")" not in expression:
+		#print(expression)
 		return expression
 	coords = [-1, -1]
 	left = 0
@@ -295,12 +307,19 @@ def user_func(env, func_name, func_body, args, *params):
 		for param, arg in zip(params, args):
 			let(copy_env, arg, param)
 		LAST_FUNC[0] = (CURRENT_LINE[0][0] - len(func_body.split("\n")), func_name)
-		print(LAST_FUNC)
 		return eval_func(copy_env, func_body)
 
 def load(fname):
 	with open(fname) as f:
 		return f.read()
+
+def loadx(env, fname):
+	with open(fname) as f:
+		string = f.read()
+		string = re.sub(r"\'", "\\'", string)
+		string = re.sub(r"\(", "\(", string)
+		string = re.sub(r"\)", "\)", string)
+	return string
 
 def prn(env, string):
 	if not string:

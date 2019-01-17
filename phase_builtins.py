@@ -21,12 +21,6 @@ def not_eq(env, a, b):
 def inputx(env):
 	return input()
 
-def loadx(env, fname):
-	with open(fname) as f:
-		string = re.sub("'", '"', f.read())
-		string = re.sub("\(", "{", string)
-		string = re.sub("\)", "}", string)
-	return string
 
 # List Functions
 def get(env, ind, lst):
