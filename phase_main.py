@@ -7,7 +7,7 @@ from phase_builtins import *
 DIGITS = set(["-","1","2","3","4","5","6","7","8","9","0"])
 SPECIAL_WORDS = set(["let", "inc", "and", "or", "not"])
 CURRENT_LINE = [(-1,"")]
-LAST_FUNC = [(-1,"<main>")]
+LAST_FUNC = [(0, "<main>")]
 QUOTE_SUB = "QUOTESUB"
 LPAREN_SUB = "AAAas12dadsa3AA"
 RPAREN_SUB = "BBBBBfgrhrbadas"
@@ -19,7 +19,11 @@ class pcols:
 """
 TODO:
 -error/exception handling for repl
+-figure out environment/scopes for user defined functions
 -make faster
+-add tail recursion?
+-add floating poit
+
 """
 
 # Command Line Control
@@ -33,9 +37,9 @@ def master():
 		if prog_val:
 			print(prog_val)
 
-def repl():
+def repl(given_env=None):
 	prog, next_line, ind_count = "", "", 0
-	env = dict()
+	env = given_env if given_env else dict()
 	try:
 		while True:
 			whitespace = "\t" * ind_count
@@ -44,15 +48,14 @@ def repl():
 			if next_line in ("quit", "exit"):
 				break
 			elif not next_line.strip() or (next_line[-1] != ":" and ind_count == 0):
-				env, ret_val = eval_program(prog, return_prog_val=True, return_env=True, complement_env=env)
+				env, ret_val = eval_program(prog, return_prog_val=True, return_env=True, complement_env=env, repl_call=True)
 				if ret_val != None:
 					print(ret_val)
 				prog, next_line, ind_count = "", "", 0
 			elif next_line[-1] == ":":
 				ind_count += 1
 	except Exception as e:
-		print (e)
-		master()
+		repl(given_env=env)
 	
 
 def temp():
@@ -70,15 +73,16 @@ Runtime errors: ZeroDivide, type errors, name errors, number of arguments,
 
 """
 # Interpreter Logic
-def eval_program(program, return_prog_val=False, return_env=False, complement_env={}):
+def eval_program(program, return_prog_val=False, return_env=False, complement_env={}, repl_call=False):
 	try:
 		env = {"prn": prn, "let": let, "eq" : eq, "not_eq": not_eq, "add": add,
 			   "div": fldiv, "mul": mul, "mod": mod, "sub": sub, "pow": powx, 
 			   "abs": absx, "min": minx, "max": maxx, "sort": sortx, "sum": sumx, 
 			   "rand": rand, "zip": zipx, "rev": revx, "pop": popx, "push": pushx, 
 			   "get": get, "len": length, "ind": indx, "seq": seqx, "load": loadx,
-			   "input": inputx}
+			   "input": inputx, "help": helpx}
 		env.update(complement_env)
+		LAST_FUNC[0] = (0, "<main>")
 		prog_val = eval_func(env, program+"\n")
 		if return_env and return_prog_val:
 			return env, prog_val
@@ -92,7 +96,10 @@ def eval_program(program, return_prog_val=False, return_env=False, complement_en
 		print("*************************************************")
 		print("{}: {}".format(type(e).__name__, e))
 		line_num, offending_line = CURRENT_LINE[0]
-		print("  line {}, in {}:".format(line_num + 1, LAST_FUNC[0][1]))
+		if repl_call:
+			print(" Error in {}".format(LAST_FUNC[0][1]))
+		else:
+			print("  line {}, in {}:".format(line_num + 1, LAST_FUNC[0][1]))
 		print("    {}".format(offending_line))
 		print("*************************************************")
 		print(pcols.GREY)
@@ -106,7 +113,7 @@ def eval_func(env, func_call):
 	for_env = {}
 	while line_num < len(code):
 		code_str, ind_lvl = code[line_num], indents[line_num]
-		CURRENT_LINE[0] = (line_num + LAST_FUNC[0][0] + 1, code_str)
+		CURRENT_LINE[0] = (line_num + LAST_FUNC[0][0], code_str)
 
 		# Check whether to repeat loop
 		if len(loops) and ind_lvl <= loops[-1][-1]:
@@ -119,6 +126,9 @@ def eval_func(env, func_call):
 					let(env, var_dict["var_name"], lst[index])
 				line_num = loop_linenum + 1
 			else:
+				if loop_type == "for":
+					del env[var_dict["ind_name"]]
+					del env[var_dict["var_name"]]
 				loops.pop()
 			continue
 
@@ -181,6 +191,8 @@ def phasify(obj):
 	if isinstance(obj, list):
 		phasified_list = [phasify(i)+" " for i in obj]
 		return "[" + "".join(phasified_list).strip() + "]"
+	if obj == None:
+		return "None"
 	raise TypeError("Invalid object: {}".format(obj))
 
 def eval_expr(env, expression):
@@ -203,6 +215,8 @@ def eval_expr(env, expression):
 		return [eval_expr(env, i) for i in expression[1:-1].split()]
 	elif fst in ("T", "F"):
 		return True if fst == "T" else False
+	elif fst == "None":
+		return None
 	elif fst in SPECIAL_WORDS:
 
 		# Keyword Functions
@@ -309,20 +323,15 @@ def user_func(env, func_name, func_body, args, *params):
 		copy_env = {key:val for key,val in env.items()}
 		for param, arg in zip(params, args):
 			let(copy_env, arg, param)
+		prev_last_func = LAST_FUNC[0]
 		LAST_FUNC[0] = (CURRENT_LINE[0][0] - len(func_body.split("\n")), func_name)
-		return eval_func(copy_env, func_body)
+		value = eval_func(copy_env, func_body)
+		LAST_FUNC[0] = prev_last_func
+		return value
 
 def load(fname):
 	with open(fname) as f:
 		return f.read()
-
-def loadx(env, fname):
-	with open(fname) as f:
-		string = f.read()
-		string = re.sub(r"\'", "\\'", string)
-		string = re.sub(r"\(", "\(", string)
-		string = re.sub(r"\)", "\)", string)
-	return string
 
 def prn(env, string):
 	if not string:

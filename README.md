@@ -28,7 +28,7 @@ For example, `prn (add (add 1 2) 3)` would print the sum of 1, 2, and 3.
 
 ## Data Types
 
-Phase supports integers, booleans, strings, lists and user-defined functions.
+Phase supports integers, booleans, strings, lists, None, and user-defined functions.
 
 **Integers**
 
@@ -42,13 +42,16 @@ Booleans can be represented literally as `T` (for true) and `F` (for false).
 
 Strings must be represented with one quote to begin them and one quote to end them. For example, `'Hello'` is a valid string. Parenthesis and single quotes must be escaped with the backslash. The load function automatically escapes all single quotes and parenthesis in the file it is given.
 
+**None**
+`None` is Phase's null value. Functions that don't return anything explicitly return None. None is falsey.
+
 **Lists**
 
 Lists can hold data of different types. When instantiating a list literal, elements should be separated by spaces. For example, `[1 2 3]` is a valid list.
 
 **User-defined Functions**
 
-Users can define their own functions use the `def` keyword (see details below). User-defined functions are called with the same syntax and rules as builtin functions. Functions are NOT treated as first class objects and higher order functions are therefore not permitted. Function names can't be T or F, can't contain single quotes, and must start with a letter or underscore.
+Users can define their own functions use the `def` keyword (see details below). User-defined functions are called with the same syntax and rules as builtin functions. Functions are NOT treated as first class objects and higher order functions are therefore not permitted. Helper functions may be defined and used within user-defined functions. Function names can't be reserved words (keywords, special functions, T, F, None), can't contain single quotes or parenthesis, and must start with a letter or underscore.
 
 ## Special Functions 
 **prn**
@@ -76,7 +79,7 @@ The block corresponding to the `while` statement will be executed iff the evalua
 
 **for**
 
-`for` in Phase is very similar to `for` in Python. `for` takes in a new variable name and either a list or variable whose value is a list. It then iterates through the list, allowing each value to be accessed in the loop by referring to the given variable. Code in the `if` block should be indented.
+`for` in Phase is very similar to `for` in Python. `for` takes in a new variable name and either a list or variable whose value is a list. It then iterates through the list, allowing each value to be accessed in the loop by referring to the given variable. Code in the `if` block should be indented. The iterative variable is removed from the environment at the end of the loop.
 
 
 ## Boolean Keywords

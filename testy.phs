@@ -1,1 +1,7 @@
-prn (load 'mys.txt')
+def (add_to lst):
+	push 1 lst
+prn 1
+let lst [1 2 3]
+add_to lst
+prn lst
+prn adiah

@@ -21,6 +21,14 @@ def not_eq(env, a, b):
 def inputx(env):
 	return input()
 
+def loadx(env, fname):
+	with open(fname) as f:
+		# Escape special chars
+		string = f.read()
+		string = re.sub(r"\'", "\\'", string)
+		string = re.sub(r"\(", "\(", string)
+		string = re.sub(r"\)", "\)", string)
+	return string
 
 # List Functions
 def get(env, ind, lst):
@@ -83,3 +91,11 @@ def rand(env, start, end):
 
 def revx(env, lst):
 	return lst[::-1]
+
+def helpx(env):
+	print("Welcome to Phase!")
+	print("Read the documentation here:")
+	print("https://github.com/SambhavS/Phase#documentation")
+	print("To exit the repl, type `exit`")
+
+#*Many functions end with an x to prevent shadowing of a Python keyword or builtin name
