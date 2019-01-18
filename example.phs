@@ -8,7 +8,7 @@ As we walk through the code examples, you can see what gets printed in your term
 By the way, this whole block is a multi-line comment. 
 Note how we started and ended it with a triple pound sign.
 
-Single line comments (like the one on line 12) simply start with a single pound sign.
+Single line comments (like the one on line 15) simply start with a single pound sign.
 ###
 
 
