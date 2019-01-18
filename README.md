@@ -9,7 +9,7 @@ You can also use the read-eval-print-loop (REPL) by omitting the filename:
 The example file `example.phs` is a tutorial composed of examples to help you get started with writing short programs. Once you've skimmed through the documentation below, it should be your next resource. Run `$python3 phase_main.py example.phs` to get started.
 
 
-Phase is a simple language with a small core of keywords and few primitive data types. It uses prefix notation, like Lisps, and is whitespace separated like Python (4-spaces or tabs). It is best learned by reading the documentation, playing with `example.phs` and testing out simple programs by using the REPL or runnning your own scripts. 
+Phase is a simple language with a small core of keywords and few primitive data types. It uses prefix notation, like Lisps, and is whitespace separated like Python (4-spaces or tabs). It is best learned by reading the documentation, playing with `example.phs`, and testing out simple programs by using the REPL or runnning your own scripts. 
 
 
 One can assume choices not explicitly outlined in the documentation below are made in the most Pythonic way possible.
