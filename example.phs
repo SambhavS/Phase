@@ -1,7 +1,18 @@
-# Hi! Welcome to Phase! (This is a comment)
-# This code tutorial will help you learn the basics of the language. Let's get started!
+###
+Hi there! Welcome to the Phase code tutorial!
+This tutorial will help you learn the basics of the language. Let's get started!
 
-## 1) SPECIAL FUNCTIONS ##
+Run this file in your terminal with the command `python3 phase_main.py example.phs`
+As we walk through the code examples, you can see what gets printed in your terminal.
+
+By the way, this whole block is a multi-line comment. 
+Note how we started and ended it with a triple pound sign.
+
+Single line comments (like the one on line 12) simply start with a single pound sign.
+###
+
+
+# Section 1: SPECIAL FUNCTIONS 
 
 # First up, let's talk about some special functions: prn, let, inc
 # 'prn' lets your print to your terminal. Make sure to use single quotes
@@ -24,7 +35,7 @@ prn new_var
 inc new_var
 prn new_var 
 
-## 2) CONTROL ##
+# Section 2: CONTROL 
 prn ''
 prn 'CONTROL'
 
@@ -51,7 +62,7 @@ prn ''
 for (z (seq 7 11)):
 	prn (mul z z)
 
-## 3) BOOLEAN KEYWORDS ##
+# Section 3: BOOLEAN KEYWORDS
 prn ''
 prn 'BOOLEAN KEYWORDS'
 
@@ -80,7 +91,7 @@ if (not F):
 if ('sometimes we use truthy values'):
 	prn 'truthy values work, not just booleans!'
 
-## 4) FUNCTIONS ##
+# Section 4: FUNCTIONS
 prn ''
 prn 'FUNCTIONS'
 
@@ -119,6 +130,13 @@ def (perm lst1 lst2):
 			prn (add (add (add item1 ' ') item2) '!')
 perm ['Hi' 'Hello' 'Hola'] ['John' 'Joe' 'Jose']
 
-## Conclusion ##
-# You did it! You've got everything you need to start writing your own programs!
-# Now go on, make someting great!
+###
+- Conclusion -
+
+You did it! 
+You've got everything you need to start writing your own programs!
+Now go on, make someting great!
+
+Remember you can always read the docs if you get stuck:
+https://github.com/SambhavS/Phase#documentation
+###

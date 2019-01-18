@@ -11,6 +11,7 @@ LAST_FUNC = [(0, "<main>")]
 QUOTE_SUB = "QUOTESUB"
 LPAREN_SUB = "AAAas12dadsa3AA"
 RPAREN_SUB = "BBBBBfgrhrbadas"
+MULTI_LINE = [False]
 class pcols:
     FAIL = "\033[91m"
     ENDCOL = "\033[0m"
@@ -23,6 +24,7 @@ TODO:
 -make faster
 -add tail recursion?
 -add floating poit
+-multi line
 
 """
 
@@ -132,8 +134,9 @@ def eval_func(env, func_call):
 				loops.pop()
 			continue
 
-		
-		if code_str and code_str[0] != "#":
+		if code_str[:3] == "###":
+			MULTI_LINE[0] = not MULTI_LINE[0]
+		if code_str and not MULTI_LINE[0] and code_str[0] != "#":
 			tokens = code_str.split()
 			command = tokens[0]
 			# Handles lines starting with a control keyword or function keyword

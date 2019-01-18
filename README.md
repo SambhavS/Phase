@@ -102,3 +102,5 @@ Phase has a host of builtin functions. They are wrapped around Python's builtin 
 ## Comments
 Single line comments can be written by writing a `#` at the start of a line. Everything on the line afer the `#` will be ignored by the interpreter.
 
+Multi line comments can be written by writing `###` at the start of the line that begins the multi line comment and `###` at the start of the line that ends of the multi line comment.
+

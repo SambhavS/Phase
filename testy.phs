@@ -1,7 +1,6 @@
-def (add_to lst):
-	push 1 lst
 prn 1
-let lst [1 2 3]
-add_to lst
-prn lst
-prn adiah
+###
+prn 100
+prn 200
+###
+prn 300
