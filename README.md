@@ -43,7 +43,8 @@ Booleans can be represented literally as `T` (for true) and `F` (for false).
 Strings must be represented with one quote to begin them and one quote to end them. For example, `'Hello'` is a valid string. Parenthesis and single quotes must be escaped with the backslash. The load function automatically escapes all single quotes and parenthesis in the file it is given.
 
 **None**
-`None` is Phase's null value. Functions that don't return anything explicitly return None. None is falsey.
+
+`None` is Phase's null value. Functions that don't return anything explicitly return `None`. `None` is falsey.
 
 **Lists**
 
