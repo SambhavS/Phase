@@ -28,7 +28,7 @@ For example, `prn (add (add 1 2) 3)` would print the sum of 1, 2, and 3.
 
 ## Data Types
 
-Phase supports integers, booleans, strings, lists, None, and user-defined functions.
+Phase supports integers, booleans, strings, lists, user-defined functions and the None object.
 
 **Integers**
 
@@ -42,10 +42,6 @@ Booleans can be represented literally as `T` (for true) and `F` (for false).
 
 Strings must be represented with one quote to begin them and one quote to end them. For example, `'Hello'` is a valid string. Parenthesis and single quotes must be escaped with the backslash. The load function automatically escapes all single quotes and parenthesis in the file it is given.
 
-**None**
-
-`None` is Phase's null value. Functions that don't return anything explicitly return `None`. `None` is falsey.
-
 **Lists**
 
 Lists can hold data of different types. When instantiating a list literal, elements should be separated by spaces. For example, `[1 2 3]` is a valid list.
@@ -53,6 +49,10 @@ Lists can hold data of different types. When instantiating a list literal, eleme
 **User-defined Functions**
 
 Users can define their own functions use the `def` keyword (see details below). User-defined functions are called with the same syntax and rules as builtin functions. Functions are NOT treated as first class objects and higher order functions are therefore not permitted. Helper functions may be defined and used within user-defined functions. Function names can't be reserved words (keywords, special functions, T, F, None), can't contain single quotes or parenthesis, and must start with a letter or underscore.
+
+**None**
+
+`None` is Phase's null value. Functions that don't return anything explicitly return `None`. `None` is falsey.
 
 ## Special Functions 
 **prn**
