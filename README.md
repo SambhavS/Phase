@@ -22,9 +22,9 @@ To report bugs, ask questions, or give feedback, send an email to sambhav@berkel
 ## Prefix Notation
 
 Functions are called using prefix notation. This means that a function call is a function name followed by its arguments.
-For example, to add two numbers, one would write `add 10 20`. No parenthesis are needed if only one function is being called in the line. If multiple functions are being called, all nested function calls must have parenthesis. 
+For example, to add two numbers, one would write `+ 10 20`. No parenthesis are needed if only one function is being called in the line. If multiple functions are being called, all nested function calls must have parenthesis. 
 
-For example, `prn (add (add 1 2) 3)` would print the sum of 1, 2, and 3.
+For example, `prn (+ (+ 1 2) 3)` would print the sum of 1, 2, and 3.
 
 ## Data Types
 
@@ -64,7 +64,7 @@ Users can define their own functions use the `def` keyword (see details below). 
 
 **inc**
 
-`inc` lets you increment a variable that has an integer value. Instead of writing `let x (add x 1)` you can write `inc x`
+`inc` lets you increment a variable that has an integer value. Instead of writing `let x (+ x 1)` you can write `inc x`
 
 ## Control (for, while, if)
 Control keyword syntax is: keyword[one space][open paren][keyword body][close paren]. For example, `if (eq x 1):`. More examples can be seen in example.phs. The control keywords work very similarly to their counterparts in Python.
@@ -97,7 +97,7 @@ Use `return` to return a value. In Phase, functions and whole programs have retu
 ## Builtin Functions
 Phase has a host of builtin functions. They are wrapped around Python's builtin functions, so reference for them can be found at https://docs.python.org/3/library/functions.html. Read the (very short) builtin file to read how each built in was implemented. Check the builtin file for the most recent list of builtins, but here are a list of all provided builtins as of writing this:
 
-`prn`, `let`, `eq`, `not_eq`, `add`, `div`, `mul`, `mod`, `sub`, `pow`, `abs`, `min`, `max`, `sort`, `sum`, `rand`, `zip`, `rev`, `pop`, `push`, `get`, `len`, `ind`, `seq`
+`prn`, `let`, `eq`, `not_eq`, `+`, `/`, `*`, `mod`, `-`, `pow`, `abs`, `min`, `max`, `sort`, `sum`, `rand`, `zip`, `rev`, `pop`, `push`, `get`, `len`, `ind`, `seq`
 
 ## Comments
 Single line comments can be written by writing a `#` at the start of a line. Everything on the line afer the `#` will be ignored by the interpreter.

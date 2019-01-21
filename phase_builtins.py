@@ -30,27 +30,32 @@ def loadx(env, fname):
 		string = re.sub(r"\)", "\)", string)
 	return string
 
+# String/List Functions
+
+def get(env, ind, seq):
+	return seq[ind]
+
+def length(env, seq):
+	return len(seq)
+
+def indx(env, item, seq):
+	return seq.index(item)
+
+def lastx(env, seq):
+	return seq[-1]
+
+def zipx(env, seq1, seq2):
+	return list(zip(seq1, seq2))
+
 # List Functions
-def get(env, ind, lst):
-	return lst[ind]
-
-def length(env, lst):
-	return len(lst)
-
 def popx(env, lst):
 	return lst.pop()
 
 def pushx(env, item, lst):
 	lst.append(item)
 
-def indx(env, item, lst):
-	return lst.index(item)
-
 def seqx(env, start, end):
 	return list(range(start, end))
-
-def zipx(env, lst1, lst2):
-	return list(zip(lst1, lst2))
 
 # Math Functions
 def add(env, a, b):
@@ -92,10 +97,16 @@ def rand(env, start, end):
 def revx(env, lst):
 	return lst[::-1]
 
+def strx(env, nstring):
+	return str(nstring)
+
+def intx(env, nint):
+	return int(nint)
+
 def helpx(env):
 	print("Welcome to Phase!")
 	print("Read the documentation here:")
 	print("https://github.com/SambhavS/Phase#documentation")
 	print("To exit the repl, type `exit`")
 
-#*Many functions end with an x to prevent shadowing of a Python keyword or builtin name
+"*Many functions end with an x to prevent shadowing of a Python keyword or builtin name*"

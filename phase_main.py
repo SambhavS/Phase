@@ -3,12 +3,11 @@ import sys
 import random
 import traceback
 from phase_builtins import *
-
 DIGITS = set(["-","1","2","3","4","5","6","7","8","9","0"])
 SPECIAL_WORDS = set(["let", "inc", "and", "or", "not"])
 CURRENT_LINE = [(-1,"")]
 LAST_FUNC = [(0, "<main>")]
-QUOTE_SUB = "QUOTESUB"
+QUOTE_SUB = "QUXYZXYZOTESUB"
 LPAREN_SUB = "AAAas12dadsa3AA"
 RPAREN_SUB = "BBBBBfgrhrbadas"
 MULTI_LINE = [False]
@@ -19,25 +18,20 @@ class pcols:
 
 """
 TODO:
--error/exception handling for repl
 -figure out environment/scopes for user defined functions
 -make faster
 -add tail recursion?
 -add floating poit
--multi line
-
 """
 
 # Command Line Control
 def master():
 	cmd_args = sys.argv
-
 	if len(cmd_args) == 1:
 		repl()
 	else:	
 		prog_val = eval_program(load(cmd_args[-1]), return_prog_val="-p" in cmd_args)
-		if prog_val:
-			print(prog_val)
+		if prog_val: print(prog_val)
 
 def repl(given_env=None):
 	prog, next_line, ind_count = "", "", 0
@@ -47,11 +41,12 @@ def repl(given_env=None):
 			whitespace = "\t" * ind_count
 			next_line = whitespace + input(">> {}".format(whitespace))
 			prog += next_line + "\n"	
-			if next_line in ("quit", "exit"):
+			if next_line in ("quit", "exit"): 
 				break
 			elif not next_line.strip() or (next_line[-1] != ":" and ind_count == 0):
-				env, ret_val = eval_program(prog, return_prog_val=True, return_env=True, complement_env=env, repl_call=True)
-				if ret_val != None:
+				env, ret_val = eval_program(prog, return_prog_val=True, return_env=True, 
+											complement_env=env, repl_call=True)
+				if ret_val is not None: 
 					print(ret_val)
 				prog, next_line, ind_count = "", "", 0
 			elif next_line[-1] == ":":
@@ -59,39 +54,22 @@ def repl(given_env=None):
 	except Exception as e:
 		repl(given_env=env)
 	
-
-def temp():
-	loc = """
-	for (k ['hi' 1 2 3]):
-		prn k
-	"""
-	eval_program(loc)
-
-"""
-Syntax Error 
-Runtime errors: ZeroDivide, type errors, name errors, number of arguments, 
-			    invalid object created (probably my fault)
-
-
-"""
 # Interpreter Logic
-def eval_program(program, return_prog_val=False, return_env=False, complement_env={}, repl_call=False):
+def eval_program(program, return_prog_val=False, 
+				 return_env=False, complement_env={}, repl_call=False):
 	try:
-		env = {"prn": prn, "let": let, "eq" : eq, "not_eq": not_eq, "add": add,
-			   "div": fldiv, "mul": mul, "mod": mod, "sub": sub, "pow": powx, 
+		env = {"prn": prn, "let": let, "eq" : eq, "not_eq": not_eq, "+": add,
+			   "/": fldiv, "*": mul, "mod": mod, "-": sub, "pow": powx, 
 			   "abs": absx, "min": minx, "max": maxx, "sort": sortx, "sum": sumx, 
 			   "rand": rand, "zip": zipx, "rev": revx, "pop": popx, "push": pushx, 
 			   "get": get, "len": length, "ind": indx, "seq": seqx, "load": loadx,
-			   "input": inputx, "help": helpx}
+			   "input": inputx, "help": helpx, "last": lastx, "int": intx, "str": strx}
 		env.update(complement_env)
 		LAST_FUNC[0] = (0, "<main>")
-		prog_val = eval_func(env, program+"\n")
-		if return_env and return_prog_val:
-			return env, prog_val
-		if return_env:
-			return env
-		if return_prog_val:
-			return prog_val
+		prog_val = eval_func(env, program+"\n", repl_call=repl_call)
+		if return_env and return_prog_val: return env, prog_val
+		elif return_env: return env
+		elif return_prog_val: return prog_val
 
 	# Error Reporting
 	except Exception as e:
@@ -108,7 +86,7 @@ def eval_program(program, return_prog_val=False, return_env=False, complement_en
 		traceback.print_exc()
 		print(pcols.ENDCOL)
 
-def eval_func(env, func_call):
+def eval_func(env, func_call, repl_call=False):
 	code, indents = extract_code(func_call)
 	line_num = 0
 	loops = []
@@ -151,9 +129,10 @@ def eval_func(env, func_call):
 						ind_name = "FOR_{}".format(var_name)
 						let(env, ind_name, 0)
 						let(env, var_name, lst[0])
-						expression = "not_eq {} (sub (len {}) 1)".format(ind_name, phasify(lst))
+						expression = "not_eq {} (- (len {}) 1)".format(ind_name, phasify(lst))
 						loops.append((command, expression, line_num, 
-									 {"var_name":var_name, "ind_name":ind_name, "lst": phasify(lst)}, ind_lvl))
+									 {"var_name":var_name, "ind_name":ind_name,
+									  "lst": phasify(lst)}, ind_lvl))
 
 				if command in ("if", "while"):
 					expression = code_str[code_str.find("(")+1 : code_str.rfind(")")]
@@ -165,9 +144,8 @@ def eval_func(env, func_call):
 					elif command == "while":
 						loops.append((command, expression, line_num, {}, ind_lvl))
 
-			elif command == "return":
+			elif command == "return": 
 				return eval_expr(env, code_str[code_str.find(" "):].strip())
-
 			elif command == "def":
 				def_tokens = code_str[code_str.find("(")+1 : code_str.rfind(")")].split()
 				func_name, arguments = def_tokens[0], def_tokens[1:]
@@ -177,25 +155,20 @@ def eval_func(env, func_call):
 					func_body += "\t"*indents[line_num] + code[line_num] + "\n"
 					line_num += 1
 				line_num -= 1
-				let(env, func_name, lambda env, *params: user_func(env, func_name, func_body, arguments, *params))
+				let(env, func_name, lambda env, 
+					*params: user_func(env, func_name, func_body, arguments, *params))
 			else:
 				# Non-keyword line
-				eval_expr(env, code_str)
+				val = eval_expr(env, code_str)
+				if repl_call: return val
 		line_num += 1
 
 def phasify(obj):
-	if isinstance(obj, bool):
-		return "T" if obj else "F"
-	if isinstance(obj, int):
-		return str(obj)
-	if isinstance(obj, str):
-		obj = re.sub("'", "\'", obj)
-		return "'" + obj + "'"
-	if isinstance(obj, list):
-		phasified_list = [phasify(i)+" " for i in obj]
-		return "[" + "".join(phasified_list).strip() + "]"
-	if obj == None:
-		return "None"
+	if isinstance(obj, bool): return "T" if obj else "F"
+	if isinstance(obj, int): return str(obj)
+	if isinstance(obj, str): return "'{}'".format(re.sub("'", "\'", obj))
+	if isinstance(obj, list): return "[{}]".format("".join(phasify(i)+" " for i in obj))
+	if obj == None: return "None"
 	raise TypeError("Invalid object: {}".format(obj))
 
 def eval_expr(env, expression):
@@ -205,20 +178,20 @@ def eval_expr(env, expression):
 	expression = re.sub(RPAREN_SUB, "\)", expression)
 	if expression == "":
 		raise SyntaxError("Empty expression found\n{}{}{}".format(pcols.GREY,
-			"Check if chars escaped correctly, look for empty (),\nand check if None is mistakenly being called", pcols.ENDCOL))
+						  """Check if chars escaped correctly, look for empty (),
+						  \nand check if None is mistakenly being called""",
+						  pcols.ENDCOL))
 	tokens = tokenize(expression)
 	fst = tokens[0]
-
-	if fst[0] == "'":
-		fst = re.sub(r"\\\(", "(", re.sub(r"\\\)", ")", fst))
-		return re.sub(QUOTE_SUB, "'", fst[1:-1])
-	elif set([i for i in fst]).issubset(DIGITS):
+	if fst[0] == "'": 
+		return re.sub(QUOTE_SUB, "'", re.sub(r"\\\(", "(", re.sub(r"\\\)", ")", fst))[1:-1])
+	elif set([i for i in fst]).issubset(DIGITS) and fst != '-': 
 		return int(fst)
-	elif fst[0] == "[":
+	elif fst[0] == "[": 
 		return [eval_expr(env, i) for i in expression[1:-1].split()]
-	elif fst in ("T", "F"):
+	elif fst in ("T", "F"): 
 		return True if fst == "T" else False
-	elif fst == "None":
+	elif fst == "None": 
 		return None
 	elif fst in SPECIAL_WORDS:
 
@@ -226,41 +199,35 @@ def eval_expr(env, expression):
 		if fst == "let":
 			arguments = [tokens[1], eval_expr(env, tokens[2])]
 			let(env, *arguments)
-			return
-		if fst == "inc":
+		elif fst == "inc":
 			inc(env, tokens[1])
-			return
-		if fst == "and":
-			if not eval_expr(env, tokens[1]):
-				return False
+		elif fst == "and":
+			if not eval_expr(env, tokens[1]): return False
 			return eval_expr(env, tokens[2])
-		if fst == "or":
+		elif fst == "or":
 			fst_arg = eval_expr(env, tokens[1])
-			if fst_arg:
-				return fst_arg
+			if fst_arg: return fst_arg
 			return eval_expr(env, tokens[2])
-		if fst == "not":
+		elif fst == "not": 
 			return not eval_expr(env, tokens[1])
 
 	elif fst in env:
-
 		# Built-ins & User Defined Functions
 		if callable(env[fst]):
 			arguments = [eval_expr(env, arg) for arg in tokens[1:]]
 			return env[fst](env, *arguments)
-		else:
-			return env[fst]
-
+		return env[fst]
 	else:
 		message = "'{}' is not defined".format(fst)
 		if fst[-1] == ",":
-			message += "{}\n(If '{}' was in a list, note that lists are not comma separated){}".format(pcols.GREY, fst, pcols.ENDCOL)
+			message += """{}\n(If '{}' was in a list, note that lists are not 
+						  comma separated){}""".format(pcols.GREY, fst, pcols.ENDCOL)
 		raise NameError(message)
 
 def tokenize(expression):
-	if not expression:
+	if not expression: 
 		return []
-	if expression[0] in ("'", "["):
+	elif expression[0] in ("'", "["):
 		if len(expression) < 2:
 			if expression[0] == "'":
 				raise SyntaxError("Unmatched quote")
@@ -269,7 +236,7 @@ def tokenize(expression):
 		matching = "'" if expression[0] == "'" else "]"
 		end_ind = 1 + expression[1:].find(matching)
 		return [expression[0:end_ind+1]] + tokenize(expression[end_ind+1:].strip())
-	if " " not in expression:
+	elif " " not in expression:
 		return [expression]
 	end_ind = expression.find(" ")
 	return [expression[:end_ind]] + tokenize(expression[end_ind+1:].strip())
@@ -299,7 +266,6 @@ def deparen(env, expression):
 	expression = re.sub(r"\\\(", LPAREN_SUB, expression)
 	expression = re.sub(r"\\\)", RPAREN_SUB, expression)
 	if "(" not in expression or ")" not in expression:
-		#print(expression)
 		return expression
 	coords = [-1, -1]
 	left = 0
@@ -337,10 +303,9 @@ def load(fname):
 		return f.read()
 
 def prn(env, string):
-	if not string:
-		print()
-	else:
+	if string not in ('', None):
 		print(phasify(string))
-
+	elif string == '':
+		print()		
 
 master()

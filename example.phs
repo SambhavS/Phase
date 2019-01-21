@@ -23,8 +23,8 @@ prn 'SPECIAL FUNCTIONS'
 # an expression that evaluates to a value
 
 let fst 100
-let snd (add 200 200)
-prn (add fst snd)
+let snd (+ 200 200)
+prn (+ fst snd)
 
 # 'inc' lets us increments an integer variable by 1. 
 # Just type inc followed by a variable name
@@ -60,8 +60,7 @@ while (not_eq x 5):
 prn '' 
 
 for (z (seq 7 11)):
-	prn (mul z z)
-
+	prn (* z z)
 # Section 3: BOOLEAN KEYWORDS
 prn ''
 prn 'BOOLEAN KEYWORDS'
@@ -96,10 +95,10 @@ prn ''
 prn 'FUNCTIONS'
 
 
-# We've already been using basic builtin functions like 'seq' and 'add'. 
+# We've already been using basic builtin functions like 'seq' and '+'. 
 # We write the function name followed by its arguments.
 
-prn (sub 10 5)
+prn (- 10 5)
 prn ''
 
 # In addition to using the builtin functions, we can define new functions and use them
@@ -117,7 +116,7 @@ print_five 'Howdy!!'
 prn ''
 
 def (mul3 argument):
-	return (mul 3 argument)
+	return (* 3 argument)
 prn (mul3 (mul3 (mul3 100)))
 
 # Let's write another function that takes in two words and prints all 
@@ -127,7 +126,7 @@ prn ''
 def (perm lst1 lst2):
 	for (item1 lst1):
 		for (item2 lst2):
-			prn (add (add (add item1 ' ') item2) '!')
+			prn (+ (+ (+ item1 ' ') item2) '!')
 perm ['Hi' 'Hello' 'Hola'] ['John' 'Joe' 'Jose']
 
 ###
