@@ -1,6 +1,6 @@
 # Phase
-Phase is an interpreted and dynamically typed programming language whose syntax takes inspiration from Python and Scheme.
-You can run Phase files with the command `$python3 phase_main.py FILENAME.phs`, where FILENAME.phs is your Phase file. 
+Phase is a dynamically typed programming language with prefix notation. Much of its syntax takes inspiration from Python and Scheme. 
+You can run Phase files using the Python interpreter, with the command `$python3 phase_main.py FILENAME.phs`, where FILENAME.phs is your Phase file. 
 
 You can also use the read-eval-print-loop (REPL) by omitting the filename: 
 `$python3 phase_main.py`. 
@@ -9,7 +9,7 @@ You can also use the read-eval-print-loop (REPL) by omitting the filename:
 The example file `example.phs` is a tutorial composed of examples to help you get started with writing short programs. Once you've skimmed through the documentation below, it should be your next resource. Run `$python3 phase_main.py example.phs` to get started.
 
 
-Phase is a simple language with a small core of keywords and few primitive data types. It uses prefix notation, like Lisps, and is whitespace separated like Python (4-spaces or tabs). It is best learned by reading the documentation, playing with `example.phs` and testing out simple programs by using the REPL or runnning your own scripts. 
+Phase is a simple language with a small core of keywords and few primitive data types. It uses prefix notation, like Lisps, and is whitespace separated like Python (4-spaces or tabs). It is best learned by reading the documentation, playing with `example.phs`, and testing out simple programs by using the REPL or runnning your own scripts. 
 
 
 One can assume choices not explicitly outlined in the documentation below are made in the most Pythonic way possible.
@@ -28,7 +28,7 @@ For example, `prn (+ (+ 1 2) 3)` would print the sum of 1, 2, and 3.
 
 ## Data Types
 
-Phase supports integers, booleans, strings, lists, None, and user-defined functions.
+Phase supports integers, booleans, strings, lists, user-defined functions and the None object.
 
 **Integers**
 
@@ -42,9 +42,6 @@ Booleans can be represented literally as `T` (for true) and `F` (for false).
 
 Strings must be represented with one quote to begin them and one quote to end them. For example, `'Hello'` is a valid string. Parenthesis and single quotes must be escaped with the backslash. The load function automatically escapes all single quotes and parenthesis in the file it is given.
 
-**None**
-`None` is Phase's null value. Functions that don't return anything explicitly return None. None is falsey.
-
 **Lists**
 
 Lists can hold data of different types. When instantiating a list literal, elements should be separated by spaces. For example, `[1 2 3]` is a valid list.
@@ -52,6 +49,10 @@ Lists can hold data of different types. When instantiating a list literal, eleme
 **User-defined Functions**
 
 Users can define their own functions use the `def` keyword (see details below). User-defined functions are called with the same syntax and rules as builtin functions. Functions are NOT treated as first class objects and higher order functions are therefore not permitted. Helper functions may be defined and used within user-defined functions. Function names can't be reserved words (keywords, special functions, T, F, None), can't contain single quotes or parenthesis, and must start with a letter or underscore.
+
+**None**
+
+`None` is Phase's null value. Functions that don't return anything explicitly return `None`. `None` is falsey.
 
 ## Special Functions 
 **prn**
@@ -95,7 +96,7 @@ The block corresponding to the `while` statement will be executed iff the evalua
 Use `return` to return a value. In Phase, functions and whole programs have return values. Be sure to turn the 'return_prog_val' flag on if you want the return value of a program, if you are extending the interpreter. You can print the returned program value in the command line by typing the `-p` flag before the name of your Phase file.
 
 ## Builtin Functions
-Phase has a host of builtin functions. They are wrapped around Python's builtin functions, so reference for them can be found at https://docs.python.org/3/library/functions.html. Read the (very short) builtin file to read how each built in was implemented. Check the builtin file for the most recent list of builtins, but here are a list of all provided builtins as of writing this:
+Phase has a host of builtin functions. They are wrapped around Python's builtin functions, so reference for them can be found at https://docs.python.org/3/library/functions.html. Read the (very short) builtin file to read how each builtin was implemented. Check the builtin file for the most recent list of builtins, but here are a list of all provided builtins as of writing this:
 
 `prn`, `let`, `eq`, `not_eq`, `+`, `/`, `*`, `mod`, `-`, `pow`, `abs`, `min`, `max`, `sort`, `sum`, `rand`, `zip`, `rev`, `pop`, `push`, `get`, `len`, `ind`, `seq`
 
