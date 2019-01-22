@@ -7,21 +7,24 @@ DIGITS = set(["-","1","2","3","4","5","6","7","8","9","0"])
 SPECIAL_WORDS = set(["let", "inc", "and", "or", "not"])
 CURRENT_LINE = [(-1,"")]
 LAST_FUNC = [(0, "<main>")]
-QUOTE_SUB = "QUXYZXYZOTESUB"
+QUOTE_SUB = " QUXYZXYZOTESUB "
 LPAREN_SUB = "AAAas12dadsa3AA"
 RPAREN_SUB = "BBBBBfgrhrbadas"
 MULTI_LINE = [False]
 class pcols:
     FAIL = "\033[91m"
     ENDCOL = "\033[0m"
-    GREY ="\033[90m"
+    GREY = "\033[90m"
 
 """
 TODO:
+-strings are broken
+-add prev commands
 -figure out environment/scopes for user defined functions
 -make faster
 -add tail recursion?
 -add floating poit
+-fix (seq 0 0) for for loop
 """
 
 # Command Line Control
@@ -188,7 +191,11 @@ def eval_expr(env, expression):
 	elif set([i for i in fst]).issubset(DIGITS) and fst != '-': 
 		return int(fst)
 	elif fst[0] == "[": 
-		return [eval_expr(env, i) for i in expression[1:-1].split()]
+		inner = expression[1:-1]
+		quote_indices = [i for i, letter in enumerate(inner) if letter == "'"]
+		strings = [inner[quote_indices[i] + 1: quote_indices[i+1]] 
+									for i in range(0, len(quote_indices), 2)]
+		return [eval_expr(env, phasify(i)) for i in strings] 
 	elif fst in ("T", "F"): 
 		return True if fst == "T" else False
 	elif fst == "None": 

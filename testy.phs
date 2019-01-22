@@ -1,13 +1,6 @@
-def (fizzbuzz k):
-	let div_3 (eq (mod k 3) 0)
-	let div_5 (eq (mod k 5) 0)
-	if (and div_3 div_5):
-		return 'Fizzbuzz'
-	if (div_3):
-		return 'Fizz'
-	if (div_5):
-		return 'Buzz'
-	return '-'
-
-for (i (seq 0 20)):
-	prn (+ (+ (str i) ': ') (fizzbuzz i))
+def (num_chars lst):
+	let count 0
+	for (string lst):
+		let count (+ count (len string))
+	return count
+prn (num_chars ['hey there' 'how are you'])
