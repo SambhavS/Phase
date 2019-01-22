@@ -1,6 +1,15 @@
-def (num_chars lst):
-	let count 0
-	for (string lst):
-		let count (+ count (len string))
-	return count
-prn (num_chars ['hey there' 'how are you'])
+def (fb x): 
+    let a (mod x 3) 
+    let b (mod x 5) 
+    if (a and b):
+        prn 'fb' 
+        return 'bob' 
+    if (a): 
+        prn 'f' 
+        return "bob" 
+    if (b): 
+        prn 'b' 
+        return 'bob'  
+
+for (a (seq 1 100)): 
+    prn (fb a)

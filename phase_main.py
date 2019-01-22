@@ -170,7 +170,7 @@ def phasify(obj):
 	if isinstance(obj, bool): return "T" if obj else "F"
 	if isinstance(obj, int): return str(obj)
 	if isinstance(obj, str): return "'{}'".format(re.sub("'", "\'", obj))
-	if isinstance(obj, list): return "[{}]".format("".join(phasify(i)+" " for i in obj))
+	if isinstance(obj, list): return "[{}]".format("".join(phasify(i)+" " for i in obj).strip())
 	if obj == None: return "None"
 	raise TypeError("Invalid object: {}".format(obj))
 
@@ -191,11 +191,13 @@ def eval_expr(env, expression):
 	elif set([i for i in fst]).issubset(DIGITS) and fst != '-': 
 		return int(fst)
 	elif fst[0] == "[": 
-		inner = expression[1:-1]
-		quote_indices = [i for i, letter in enumerate(inner) if letter == "'"]
-		strings = [inner[quote_indices[i] + 1: quote_indices[i+1]] 
-									for i in range(0, len(quote_indices), 2)]
-		return [eval_expr(env, phasify(i)) for i in strings] 
+		if "'" in fst:
+			quote_indices = [i for i, letter in enumerate(expression[1:-1]) if letter == "'"]
+			strings = [phasify(inner[quote_indices[i] + 1: quote_indices[i+1]])
+										for i in range(0, len(quote_indices), 2)]
+			return strings
+		return [eval_expr(env, i) for i in expression[1:-1].split()]
+
 	elif fst in ("T", "F"): 
 		return True if fst == "T" else False
 	elif fst == "None": 
